@@ -13,10 +13,11 @@ from pymongo import MongoClient
 from bson import json_util
 from fastapi import FastAPI, HTTPException
 import httpx
-import aiofiles # Optional, but good for async file writing
+from dotenv import load_dotenv
 import os
 
 app = FastAPI()
+load_dotenv()
 
 app.add_middleware(
     CORSMiddleware,
@@ -52,10 +53,9 @@ async def verify_diff():
     file_path = os.path.join(folder_path, os.listdir(folder_path)[0])
     with open(file_path, "r", encoding="utf-8") as f:
         json1 = json.load(f)
-    # print(json1, type(json1))
-    ATLAS_CONNECTION_STRING = "mongodb+srv://webdevlearning777_db_user:shKUSxcnmFhvlnyE@documents.bb7wqae.mongodb.net/?appName=Documents"
-    DB_NAME = "test"
-    COLLECTION_NAME = "marksheets"
+    ATLAS_CONNECTION_STRING = os.getenv("ATLAS_DB_URL")
+    DB_NAME = os.getenv("DB_NAME")
+    COLLECTION_NAME = os.getenv("COLLECTION_NAME")
 
     def get_student_marksheet(roll_no, semester):
         try:
@@ -121,9 +121,9 @@ async def save_pdf(pdf_url: str = Query(...)):
     
 @app.get('/uploadMongo')
 async def uploadDoc2Mongo():
-    ATLAS_CONNECTION_STRING = "mongodb+srv://webdevlearning777_db_user:shKUSxcnmFhvlnyE@documents.bb7wqae.mongodb.net/?appName=Documents"
-    DB_NAME = "test"
-    COLLECTION_NAME = "marksheets"
+    ATLAS_CONNECTION_STRING = os.getenv("ATLAS_DB_URL")
+    DB_NAME = os.getenv("DB_NAME")
+    COLLECTION_NAME = os.getenv("COLLECTION_NAME")
     try:
         client = MongoClient(ATLAS_CONNECTION_STRING)
         db = client[DB_NAME]
