@@ -288,7 +288,7 @@ export const VerificationFlow: React.FC<VerificationFlowProps> = ({ userId, onCo
     try {
         if (mode === 'UPLOAD' && file) {
             const formData = new FormData();
-            formData.append('file_upload', file);
+            formData.append('file', file);
             
             // --- Step 1: Upload File ---
             const uploadEndpoint = "http://127.0.0.1:8000/uploadFile/";
@@ -303,25 +303,44 @@ export const VerificationFlow: React.FC<VerificationFlowProps> = ({ userId, onCo
                 const verifyResponse = await fetch(verifyEndpoint, { method: "GET" });
                 
                 if (verifyResponse.ok) {
-                    const result = await verifyResponse.json();
-                    
-                    // FIX 2: Parse the diff JSON string
-                    let parsedDiff = {};
-                    try {
-                        parsedDiff = JSON.parse(result.diff);
-                    } catch (e) {
-                        console.error("Failed to parse diff JSON string:", result.diff, e);
-                    }
-                    
-                    comparisonData = {
-                        file1: result.file1,
-                        file2: result.file2,
-                        diff: parsedDiff
-                    };
+                  const result = await verifyResponse.json();
+                  
+                  // 1. Determine Status based on the diff
+                  // If diff is empty, it's a MATCH (Verified). If not, it's a MISMATCH (Flagged).
+                  const isMatch = !result.diff || Object.keys(result.diff).length === 0;
+              
+                  // 2. Prepare the Diff Data (Safe Parsing)
+                  let parsedDiff = result.diff;
+                  if (typeof result.diff === 'string') {
+                       try { parsedDiff = JSON.parse(result.diff); } catch(e) {}
+                  }
+                  
+                  comparisonData = {
+                      file1: result.file1,
+                      file2: result.file2,
+                      diff: parsedDiff
+                  };
+              
+                  // 3. Submit Tracking Request with the CORRECT STATUS
+                  // 1. Calculate the status dynamically
+// If diff is empty, it's VERIFIED. If not, it's FLAGGED.
+const finalStatus = (comparisonData?.diff && Object.keys(comparisonData.diff).length > 0) 
+    ? "FLAGGED" 
+    : "VERIFIED";
 
-                } else {
-                    throw new Error(`Verification API call failed with status: ${verifyResponse.status}`);
-                }
+// 2. Pass the status and the result to the API
+const trackingRes = await api.submitVerificationRequest(
+    file, 
+    userId, 
+    finalStatus,   // <--- Sending "VERIFIED" or "FLAGGED"
+    comparisonData // <--- Sending the proof
+);
+                  
+                  localRequestId = trackingRes.requestId;
+              
+              } else {
+                  throw new Error(`Verification failed: ${verifyResponse.status}`);
+              }
 
                 // Step 3: Submit tracking request
                 const trackingRes = await api.submitVerificationRequest(file, userId);

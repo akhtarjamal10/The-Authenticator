@@ -1,0 +1,102 @@
+{
+    "marksheet": {
+        "rollNo": "202410101200038",
+        "university": "SHRI RAMSWAROOP MEMORIAL UNIVERSITY",
+        "document_metadata": {
+            "schema_version": "1.0",
+            "university_name": "SHRI RAMSWAROOP MEMORIAL UNIVERSITY",
+            "document_type": "marksheet",
+            "issue_date": null
+        },
+        "student_info": {
+            "name": "Deepak Mandal University Roll No",
+            "roll_no": "202410101200038",
+            "registration_no": "202410101200038",
+            "certificate_id": null
+        },
+        "academic_info": {
+            "course": "BACHELOR OF TECHNOLOGY",
+            "semester": "II",
+            "marks": {
+                "": "",
+                "Calculus": "8",
+                "Mathematical Foundations of Computing": "6",
+                "Communication and Ethics": "6",
+                "Book Club and Social Emotional Intelligence - II": "7",
+                "Data Handling with Python": "7",
+                "Data Structures and Algorithms": "7"
+            },
+            "credits": "",
+            "total_marks": 0,
+            "total_credits": 40.0,
+            "sgpa": 0.0,
+            "cgpa": 0.0,
+            "result_status": "FAIL",
+            "subjects": [
+                {
+                    "code": "THEORY",
+                    "name": "",
+                    "grade": "",
+                    "grade_points": "",
+                    "credit": ""
+                },
+                {
+                    "code": "BMA2009",
+                    "name": "Calculus",
+                    "grade": "A",
+                    "grade_points": "8",
+                    "credit": "4"
+                },
+                {
+                    "code": "BMA2008",
+                    "name": "Mathematical Foundations of Computing",
+                    "grade": "B",
+                    "grade_points": "6",
+                    "credit": "4"
+                },
+                {
+                    "code": "BHU2026",
+                    "name": "Communication and Ethics",
+                    "grade": "B",
+                    "grade_points": "6",
+                    "credit": "3"
+                },
+                {
+                    "code": "BHU2027",
+                    "name": "Book Club and Social Emotional Intelligence - II",
+                    "grade": "B+",
+                    "grade_points": "7",
+                    "credit": "1"
+                },
+                {
+                    "code": "BCS2704",
+                    "name": "Data Handling with Python",
+                    "grade": "B+",
+                    "grade_points": "7",
+                    "credit": "4"
+                },
+                {
+                    "code": "BCS2015",
+                    "name": "Data Structures and Algorithms",
+                    "grade": "B+",
+                    "grade_points": "7",
+                    "credit": "4"
+                },
+                {
+                    "code": "PRACTICAL",
+                    "name": "",
+                    "grade": "",
+                    "grade_points": "",
+                    "credit": ""
+                },
+                {
+                    "code": "",
+                    "name": "",
+                    "grade": "Total",
+                    "grade_points": "",
+                    "credit": "20"
+                }
+            ]
+        }
+    }
+}

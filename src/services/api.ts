@@ -1073,6 +1073,22 @@ import { MONTHLY_STATS } from "../constants";
 // ---------------------------------------------
 // EXTENDED TYPES
 // ---------------------------------------------
+// --- ✅ NEW HELPER: Remove empty keys recursively ---
+const sanitizeForFirestore = (obj: any): any => {
+  if (Array.isArray(obj)) {
+    return obj.map(sanitizeForFirestore);
+  } else if (obj !== null && typeof obj === 'object') {
+    const newObj: any = {};
+    Object.keys(obj).forEach(key => {
+      // ONLY keep the key if it is NOT an empty string
+      if (key.trim() !== "") {
+         newObj[key] = sanitizeForFirestore(obj[key]);
+      }
+    });
+    return newObj;
+  }
+  return obj;
+};
 
 export interface FixedInstitution extends Institution {
   logo?: string;
@@ -1407,35 +1423,46 @@ export const api = {
   },
 
   // --- B. User Verification Request (Citizen Side) ---
-  submitVerificationRequest: async (file: File, userId: string) => {
-    if (!file) throw new Error("File missing");
+  // In src/services/api.ts
 
-    // 1. Create FormData for Python backend
-    const formData = new FormData();
-    formData.append("file", file);
+  submitVerificationRequest: async (
+    file: File, 
+    userId: string, 
+    status: string = "PENDING", 
+    resultData: any = null
+  ) => {
+      if (!file) throw new Error("File missing");
 
-    const response = await fetch("http://127.0.0.1:8000/uploadFile/", {
-      method: "POST",
-      body: formData, 
-    });
+      // 1. Upload to Python Backend
+      const formData = new FormData();
+      formData.append("file", file);
 
-    if (!response.ok) throw new Error("Backend upload failed");
+      const response = await fetch("http://127.0.0.1:8000/uploadFile/", {
+        method: "POST",
+        body: formData, 
+      });
 
-    const result = await response.json();
-    const fileName = result.filename;
-    const fileUrl = `http://127.0.0.1:8000/uploads/${fileName}`;
+      if (!response.ok) throw new Error("Backend upload failed");
 
-    // 2. Add to Queue
-    const docRef = await addDoc(collection(db, "verification_queues"), {
-      userId,
-      fileName: fileName,
-      fileUrl: fileUrl,
-      status: "PENDING",
-      type: "DOCUMENT",
-      submittedAt: Timestamp.now(),
-    });
+      const result = await response.json();
+      const fileName = result.filename;
+      const fileUrl = `http://127.0.0.1:8000/uploads/${fileName}`;
 
-    return { requestId: docRef.id };
+      // 2. ✅ SANITIZE: Clean the resultData to remove "" keys
+      const cleanResultData = resultData ? sanitizeForFirestore(resultData) : null;
+
+      // 3. Save to Firestore (Safe now!)
+      const docRef = await addDoc(collection(db, "verification_queues"), {
+        userId,
+        fileName: fileName,
+        fileUrl: fileUrl,
+        status: status, 
+        verificationResult: cleanResultData, // Use the clean data
+        type: "DOCUMENT",
+        submittedAt: Timestamp.now(),
+      });
+
+      return { requestId: docRef.id };
   },
 
   submitManualRequest: async (details: any, userId: string) => {
