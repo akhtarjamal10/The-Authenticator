@@ -49,13 +49,15 @@ export const InstitutionRegistration: React.FC<Props> = ({ onNavigate }) => {
       setError(error.code === 'auth/email-already-in-use'
         ? "Email already registered."
         : "Registration failed.");
-    } finally {
-      setLoading(false);
-    }
+      } finally {
+        setLoading(false);
+      }
+      // onNavigate('institution-dashboard');      
   };
 
   // SUCCESS SCREEN
   if (step === 2) {
+    console.log("Inside step 2");
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4">
         <div className="max-w-md w-full bg-white p-8 rounded shadow text-center border-t-4 border-gov-green">
@@ -240,7 +242,7 @@ export const InstitutionRegistration: React.FC<Props> = ({ onNavigate }) => {
             </button>
             <button type="submit" disabled={loading}
               className="bg-gov-orange text-white px-8 py-2 rounded font-bold shadow hover:bg-orange-600 disabled:opacity-50">
-              {loading ? 'Submitting...' : 'Submit Application'}
+              {loading ? 'Submitting...' : 'Submit'}
             </button>
           </div>
 

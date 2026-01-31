@@ -21,14 +21,16 @@ cloudinary.config({
   api_secret: CLOUD_API_SECRET,
 });
 
-// 2. Multer Storage Configuration
-const storage = new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: {
-    folder: 'srmu-docs',
-    allowed_formats: ['jpg', 'png', 'pdf'],
-  },
+const storage = multer.diskStorage({
+	destination: (req, file, cb) => {
+		cb(null, "./uploads/"); // make sure this folder exists
+	},
+	filename: (req, file, cb) => {
+		const uniqueName = Date.now() + "-" + file.originalname;
+		cb(null, uniqueName);
+	},
 });
+
 
 const upload = multer({ storage: storage });
 
@@ -48,4 +50,4 @@ app.post('/upload', upload.array('files', 10), (req, res) => {
 });
 
 const PORT = 5000;
-app.listen(PORT, () => console.log("Server running on port ${PORT}"));
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

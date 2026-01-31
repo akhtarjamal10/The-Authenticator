@@ -1,188 +1,315 @@
-import React, { useState } from 'react';
-import { Upload, CheckCircle, X, FileText } from 'lucide-react';
-import { api } from '../services/api';
-import UploadDoc from './UploadDoc';
+// import React, { useState } from 'react';
+// import { Upload, CheckCircle, X, FileText } from 'lucide-react';
+// import { api } from '../services/api';
+// import UploadDoc from './UploadDoc';
 
-interface Props { 
-  institutionName?: string;
-  institutionId?: string; 
-}
+// interface Props { 
+//   institutionName?: string;
+//   institutionId?: string; 
+// }
 
-export const InstitutionDashboard: React.FC<Props> = ({ institutionName, institutionId }) => {
+// export const InstitutionDashboard: React.FC<Props> = ({ institutionName, institutionId }) => {
 
-  const [modalOpen, setModalOpen] = useState(false);
-  const [category, setCategory] = useState("");
-  const [year, setYear] = useState("");
-  const [files, setFiles] = useState<File[]>([]);
-  const [uploading, setUploading] = useState(false);
-  const [success, setSuccess] = useState(false);
+//   const [modalOpen, setModalOpen] = useState(false);
+//   const [category, setCategory] = useState("");
+//   const [year, setYear] = useState("");
+//   const [files, setFiles] = useState<File[]>([]);
+//   const [uploading, setUploading] = useState(false);
+//   const [success, setSuccess] = useState(false);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setFiles(Array.from(e.target.files));
-    }
-  };
+//   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+//     if (e.target.files) {
+//       setFiles(Array.from(e.target.files));
+//     }
+//   };
 
-  const handleUpload = async () => {
-    if (!category || !year || files.length === 0) {
-      alert("All fields are required.");
-      return;
-    }
+//   const handleUpload = async () => {
+//     if (!category || !year || files.length === 0) {
+//       alert("All fields are required.");
+//       return;
+//     }
 
-    setUploading(true);
-    setSuccess(false);
+//     setUploading(true);
+//     setSuccess(false);
 
-    try {
-      // Simulate upload (replace this with actual upload logic)
-      await new Promise(res => setTimeout(res, 1500));
+//     try {
+//       // Simulate upload (replace this with actual upload logic)
+//       await new Promise(res => setTimeout(res, 1500));
       
-      setSuccess(true);
-      setUploading(false);
+//       setSuccess(true);
+//       setUploading(false);
 
-      // Clear form
-      setCategory("");
-      setYear("");
-      setFiles([]);
+//       // Clear form
+//       setCategory("");
+//       setYear("");
+//       setFiles([]);
 
-    } catch (err) {
-      alert("Upload failed");
-      setUploading(false);
-    }
+//     } catch (err) {
+//       alert("Upload failed");
+//       setUploading(false);
+//     }
+//   };
+
+//   return (
+//     <div className="max-w-5xl mx-auto px-4 py-8">
+
+//       {/* HEADER */}
+//       <div className="flex justify-between items-center mb-8 border-b border-gray-200 pb-4">
+//         <div>
+//           <h1 className="text-2xl font-bold text-gray-900 font-serif">
+//             Welcome, {institutionName || "Institution"}
+//           </h1>
+//           <p className="text-sm text-gray-500">Upload and manage your institution documents.</p>
+//         </div>
+
+//         <div className="bg-blue-50 text-gov-blue px-4 py-2 rounded border border-blue-200 font-mono text-sm">
+//           Status: <span className="text-green-600 font-bold">ACTIVE</span>
+//         </div>
+//       </div>
+
+//       {/* UPLOAD DOCUMENT BUTTON */}
+//       <UploadDoc />
+//       {/* <div className="bg-white p-8 rounded shadow border border-gray-200 text-center">
+//         <h2 className="text-xl font-bold text-gray-800 mb-4">Upload Documents</h2>
+//         <p className="text-gray-600 text-sm mb-6">
+//           Upload PDFs such as marksheets, fee receipts, degrees, or other certificates.
+//         </p>
+
+//         <button
+//           onClick={() => setModalOpen(true)}
+//           className="bg-gov-blue text-white px-6 py-3 rounded font-semibold shadow hover:bg-blue-700 transition"
+//         >
+//           Upload Documents
+//         </button> */}
+//         {/* <button
+//   onClick={() => window.location.href = "http://10.195.115.216:9001"}
+//   className="bg-gov-blue text-white px-6 py-3 rounded font-semibold shadow hover:bg-blue-700 transition"
+// >
+//   Upload Documents
+// </button> 
+
+//       </div>
+// */}
+
+//       {/* ---------------- MODAL (POPUP) ---------------- */}
+//       {modalOpen && (
+//         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+//           <div className="bg-white w-full max-w-lg rounded-lg shadow-lg p-6 relative">
+
+//             {/* Close Button */}
+//             <button onClick={() => setModalOpen(false)} className="absolute right-4 top-4 text-gray-500 hover:text-black">
+//               <X size={20} />
+//             </button>
+
+//             <h2 className="text-xl font-bold text-gray-800 mb-4">Upload Document Details</h2>
+
+//             {/* SUCCESS MESSAGE */}
+//             {success && (
+//               <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded mb-4 flex items-center gap-2">
+//                 <CheckCircle size={20} className="text-green-600" />
+//                 Uploaded successfully!
+//               </div>
+//             )}
+
+//             {/* FORM */}
+//             <div className="space-y-4">
+
+//               {/* CATEGORY */}
+//               <div>
+//                 <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+//                 <select 
+//                   className="w-full border p-2 rounded"
+//                   value={category}
+//                   onChange={e => setCategory(e.target.value)}
+//                 >
+//                   <option value="">Select Category</option>
+//                   <option value="Marksheet">Marksheet</option>
+//                   <option value="Fees Receipt">Fees Receipt</option>
+//                   <option value="Degree">Degree</option>
+//                   <option value="Other Certificate">Other Certificate</option>
+//                 </select>
+//               </div>
+
+//               {/* YEAR */}
+//               <div>
+//                 <label className="block text-sm font-medium text-gray-700 mb-1">Year</label>
+//                 <input 
+//                   type="text"
+//                   placeholder="e.g. 2024"
+//                   className="w-full border p-2 rounded"
+//                   value={year}
+//                   onChange={e => setYear(e.target.value)}
+//                 />
+//               </div>
+
+//               {/* PDF UPLOAD */}
+//               <div>
+//                 <label className="block text-sm font-medium text-gray-700 mb-1">Upload PDF(s)</label>
+//                 <input 
+//                   type="file"
+//                   accept="application/pdf"
+//                   multiple
+//                   onChange={handleFileChange}
+//                 />
+
+//                 {files.length > 0 && (
+//                   <ul className="mt-2 text-sm text-gray-700 list-disc list-inside">
+//                     {files.map((file, idx) => (
+//                       <li key={idx}>{file.name}</li>
+//                     ))}
+//                   </ul>
+//                 )}
+//               </div>
+
+//               {/* BUTTONS */}
+//               <div className="flex justify-end gap-4 mt-4">
+//                 <button 
+//                   onClick={() => setModalOpen(false)} 
+//                   className="px-4 py-2 bg-gray-100 rounded hover:bg-gray-200"
+//                 >
+//                   Cancel
+//                 </button>
+
+//                 <button 
+//                   onClick={handleUpload}
+//                   disabled={uploading}
+//                   className="px-4 py-2 bg-gov-blue text-white rounded shadow hover:bg-blue-700 disabled:opacity-50"
+//                 >
+//                   {uploading ? "Uploading..." : "Upload"}
+//                 </button>
+//               </div>
+
+//             </div>
+//           </div>
+//         </div>
+//       )}
+//     </div>
+//   );
+// };
+import React, { useEffect, useState } from 'react';
+import { UploadDoc } from './UploadDoc'; 
+import { api } from '../services/api';
+import { auth } from '../firebaseConfig';
+import { FileText, RefreshCw, CheckCircle, Clock, XCircle } from 'lucide-react';
+import { VerificationRequest } from '../types';
+
+export const InstitutionDashboard: React.FC = () => {
+  const [myUploads, setMyUploads] = useState<VerificationRequest[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  const currentUserId = auth.currentUser?.uid;
+
+  useEffect(() => {
+    const fetchMyUploads = async () => {
+      if (!currentUserId) return;
+      setLoading(true);
+      try {
+        const data = await api.getUserRequests(currentUserId);
+        setMyUploads(data);
+      } catch (error) {
+        console.error("Failed to fetch uploads", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMyUploads();
+  }, [currentUserId, refreshKey]);
+
+  const handleUploadSuccess = () => {
+    setRefreshKey(prev => prev + 1);
   };
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-8">
-
-      {/* HEADER */}
-      <div className="flex justify-between items-center mb-8 border-b border-gray-200 pb-4">
+    <div className="max-w-7xl mx-auto px-4 py-8">
+      
+      <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 font-serif">
-            Welcome, {institutionName || "Institution"}
-          </h1>
-          <p className="text-sm text-gray-500">Upload and manage your institution documents.</p>
+          <h1 className="text-3xl font-serif font-bold text-gray-900">Institution Dashboard</h1>
+          <p className="text-gray-500 mt-1">Upload student records and track verification status.</p>
         </div>
-
-        <div className="bg-blue-50 text-gov-blue px-4 py-2 rounded border border-blue-200 font-mono text-sm">
-          Status: <span className="text-green-600 font-bold">ACTIVE</span>
-        </div>
-      </div>
-
-      {/* UPLOAD DOCUMENT BUTTON */}
-      <UploadDoc />
-      {/* <div className="bg-white p-8 rounded shadow border border-gray-200 text-center">
-        <h2 className="text-xl font-bold text-gray-800 mb-4">Upload Documents</h2>
-        <p className="text-gray-600 text-sm mb-6">
-          Upload PDFs such as marksheets, fee receipts, degrees, or other certificates.
-        </p>
-
-        <button
-          onClick={() => setModalOpen(true)}
-          className="bg-gov-blue text-white px-6 py-3 rounded font-semibold shadow hover:bg-blue-700 transition"
+        <button 
+          onClick={() => setRefreshKey(k => k + 1)}
+          className="flex items-center gap-2 text-sm text-blue-600 hover:bg-blue-50 px-3 py-2 rounded transition-colors"
         >
-          Upload Documents
-        </button> */}
-        {/* <button
-  onClick={() => window.location.href = "http://10.195.115.216:9001"}
-  className="bg-gov-blue text-white px-6 py-3 rounded font-semibold shadow hover:bg-blue-700 transition"
->
-  Upload Documents
-</button> 
-
+          <RefreshCw size={16} /> Refresh Data
+        </button>
       </div>
-*/}
 
-      {/* ---------------- MODAL (POPUP) ---------------- */}
-      {modalOpen && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white w-full max-w-lg rounded-lg shadow-lg p-6 relative">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        {/* LEFT COLUMN: UPLOAD FORM */}
+        <div className="lg:col-span-1">
+          {/* ✅ FIXED: Correctly using the component from the same folder */}
+          <UploadDoc 
+            organisationId="GLOBAL" 
+            onUploadSuccess={handleUploadSuccess} 
+          />
+        </div>
 
-            {/* Close Button */}
-            <button onClick={() => setModalOpen(false)} className="absolute right-4 top-4 text-gray-500 hover:text-black">
-              <X size={20} />
-            </button>
+        {/* RIGHT COLUMN: STATUS LIST */}
+        <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+          <div className="bg-gray-50 p-4 border-b border-gray-200">
+            <h3 className="font-bold text-gray-800 flex items-center gap-2">
+              <FileText size={20} className="text-gray-500" /> 
+              My Upload History
+            </h3>
+          </div>
 
-            <h2 className="text-xl font-bold text-gray-800 mb-4">Upload Document Details</h2>
-
-            {/* SUCCESS MESSAGE */}
-            {success && (
-              <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded mb-4 flex items-center gap-2">
-                <CheckCircle size={20} className="text-green-600" />
-                Uploaded successfully!
+          <div className="divide-y divide-gray-100 max-h-[600px] overflow-y-auto">
+            {loading ? (
+              <div className="p-8 text-center text-gray-400">Loading records...</div>
+            ) : myUploads.length === 0 ? (
+              <div className="p-12 text-center text-gray-400 italic">
+                No documents uploaded yet.
               </div>
+            ) : (
+              myUploads.map((req) => {
+                // ✅ FIX 2: Cast status to string to avoid TypeScript conflict 
+                // between 'APPROVED' (Backend) and 'COMPLETED' (Old Type Definition)
+                const status = req.status as string; 
+
+                return (
+                  <div key={req.id} className="p-4 hover:bg-slate-50 transition-colors flex items-center justify-between">
+                    <div className="flex items-start gap-3">
+                      <div className={`mt-1 p-2 rounded-full ${
+                        status === 'APPROVED' ? 'bg-green-100 text-green-600' :
+                        status === 'REJECTED' ? 'bg-red-100 text-red-600' :
+                        'bg-orange-100 text-orange-600'
+                      }`}>
+                        {status === 'APPROVED' ? <CheckCircle size={18} /> :
+                         status === 'REJECTED' ? <XCircle size={18} /> :
+                         <Clock size={18} />}
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-gray-900">{req.fileName}</h4>
+                        <p className="text-xs text-gray-500">
+                          Uploaded: {req.submittedAt || "Recently"}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="text-right">
+                      <span className={`inline-block px-3 py-1 rounded-full text-xs font-bold ${
+                        status === 'APPROVED' ? 'bg-green-100 text-green-800' :
+                        status === 'REJECTED' ? 'bg-red-100 text-red-800' :
+                        'bg-orange-100 text-orange-800'
+                      }`}>
+                        {status}
+                      </span>
+                      {status === 'APPROVED' && (
+                         <p className="text-xs text-green-600 mt-1">Verified</p>
+                      )}
+                    </div>
+                  </div>
+                );
+              })
             )}
-
-            {/* FORM */}
-            <div className="space-y-4">
-
-              {/* CATEGORY */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
-                <select 
-                  className="w-full border p-2 rounded"
-                  value={category}
-                  onChange={e => setCategory(e.target.value)}
-                >
-                  <option value="">Select Category</option>
-                  <option value="Marksheet">Marksheet</option>
-                  <option value="Fees Receipt">Fees Receipt</option>
-                  <option value="Degree">Degree</option>
-                  <option value="Other Certificate">Other Certificate</option>
-                </select>
-              </div>
-
-              {/* YEAR */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Year</label>
-                <input 
-                  type="text"
-                  placeholder="e.g. 2024"
-                  className="w-full border p-2 rounded"
-                  value={year}
-                  onChange={e => setYear(e.target.value)}
-                />
-              </div>
-
-              {/* PDF UPLOAD */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Upload PDF(s)</label>
-                <input 
-                  type="file"
-                  accept="application/pdf"
-                  multiple
-                  onChange={handleFileChange}
-                />
-
-                {files.length > 0 && (
-                  <ul className="mt-2 text-sm text-gray-700 list-disc list-inside">
-                    {files.map((file, idx) => (
-                      <li key={idx}>{file.name}</li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-
-              {/* BUTTONS */}
-              <div className="flex justify-end gap-4 mt-4">
-                <button 
-                  onClick={() => setModalOpen(false)} 
-                  className="px-4 py-2 bg-gray-100 rounded hover:bg-gray-200"
-                >
-                  Cancel
-                </button>
-
-                <button 
-                  onClick={handleUpload}
-                  disabled={uploading}
-                  className="px-4 py-2 bg-gov-blue text-white rounded shadow hover:bg-blue-700 disabled:opacity-50"
-                >
-                  {uploading ? "Uploading..." : "Upload"}
-                </button>
-              </div>
-
-            </div>
           </div>
         </div>
-      )}
+
+      </div>
     </div>
   );
 };

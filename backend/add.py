@@ -2,10 +2,11 @@ from fastapi import FastAPI, HTTPException, Query
 import requests
 import os
 from urllib.parse import urlparse
+import uvicorn
 
 app = FastAPI()
 
-DOWNLOAD_DIR = "C:\\Desktop\\src\\uploads"
+DOWNLOAD_DIR = "./uploads"
 os.makedirs(DOWNLOAD_DIR, exist_ok=True)
 
 
@@ -21,3 +22,7 @@ def download_pdf(pdf_url: str = Query(..., description="Cloudinary PDF URL")):
         print("File downloaded successfully")
     except Exception as e:
         print(e)
+
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=9000)

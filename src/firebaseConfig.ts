@@ -1,7 +1,8 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, PhoneAuthProvider } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
-import { getStorage } from "firebase/storage"; 
+// 1. IMPORT THESE for the fix
+import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_API_KEY,
@@ -16,7 +17,14 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);
-export const db = getFirestore(app);
+
+// 2. USE initializeFirestore INSTEAD OF getFirestore
+export const db = initializeFirestore(app, {
+  localCache: persistentLocalCache({
+    tabManager: persistentMultipleTabManager(),
+  }),
+  experimentalForceLongPolling: true, // <--- THIS LINE STOPS THE HANGING
+});
 
 export const googleProvider = new GoogleAuthProvider();
 export const phoneProvider = new PhoneAuthProvider(auth);

@@ -22,10 +22,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentUser, role, o
     onNavigate(page);
     setIsMobileMenuOpen(false);
   };
+  
 
   return (
     <nav className="bg-gov-blue shadow-lg sticky top-0 z-50">
-      <div className="bg-blue-900 text-blue-100 text-[10px] md:text-xs py-1 px-4 flex justify-between items-center border-b border-blue-800">
+      {/* <div className="bg-blue-900 text-blue-100 text-[10px] md:text-xs py-1 px-4 flex justify-between items-center border-b border-blue-800">
         <div className="flex gap-4">
           <span className="hover:underline cursor-pointer">Government of Jharkhand</span>
           <span className="hidden md:inline border-l border-blue-700 pl-4 hover:underline cursor-pointer">
@@ -41,7 +42,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentUser, role, o
           <span className="text-gray-500">|</span>
           <button className="flex items-center gap-1 hover:text-white"><span>English</span></button>
         </div>
-      </div>
+      </div> */}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
